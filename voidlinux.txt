@@ -1,0 +1,78 @@
+﻿---distros based on void
+AgarimOS: mate - lxqt - gnome - cinnamon - plasma - (like endeavouros for arch? updated)
+gnome: https://github.com/gabeeOSLinux/gabeeOSLinux?tab=readme-ov-file (outdated)
+
+---intallation
+- EFI partition as vfat and mount it to /boot/efi
+- swap partition as swap
+- root partition as ext4.
+- home partition as ext4 . mount point: /home
+
+--install with gnome
+After installation
+xbps-install -u xbps
+xbps-install -Su
+xbps-install -S gnome
+or: gnome-core
+xbps-install -S gnome-apps
+xbps-install -S dbus
+enable the dbus service:
+sudo ln -sv /etc/sv/dbus /var/service
+
+--remove xfce
+sudo xbps-remove -R xfce4 xfce4-goodies xfce4-panel
+sudo xbps-remove -o
+
+---recommanded voidlinux packages
+vpm: void package manager
+sudo vpm up = update system
+sudo vpm i pacakge = install package
+vpm s package = search
+vpm remove package 
+vpm ar = autoremove - remove orphaned packages
+
+---enable nonfree repository
+sudo vpm i void-repo-nonfree
+pacakges needed in it: zenmap
+broadcom wireless driver - android-studio - nvidia drivers - scanner drivers - master-pdf-editor
+---disable nonfree repo
+sudo vpm remove void-repo-nonfree
+
+---enable flatpak
+sudo xbps-install -S flatpak
+Add the Flathub repository, the primary source for Flatpak applications:
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+Restart your system to complete the setup process. After rebooting, you can install applications.
+Install the desired application using the flatpak install command. For example, to install Discord:
+flatpak install flathub com.discordapp.Discord
+
+--export the package list:
+xbps-query -l | awk '{ print $2 }' | xargs -n1 xbps-uhelper getpkgname
+save to list:
+package-list.txt
+
+--copy this folder:
+/var/cache/xbps
+
+---install the packages in the other computer
+xbps-install -Sf $(cat package-list.txt)
+After installation, run xbps-reconfigure -a
+rsync
+
+---build a modified iso
+kotoko/voidlinux-iso-extra, 
+void-mklive
+sudo ./mkiso.sh -a x86_64-musl -b gnome  -r /var/db/xbps
+sudo ./mkiso.sh -a x86_64-musl -b gnome  -r /var/cache/xbps
+-p "firefox ibreoffice wine winegui cups cups-pdf fastfetch encfs git tor telegram-desktop"
+
+---killall alternative: pkill
+sudo pkill tor
+
+---sub repos
+nonfree: contains software packages with non-free licenses
+multilib: contains 32-bit libraries for 64-bit systems (glibc only)
+multilib/nonfree: contains non-free multilib packages
+debug: contains debugging symbols for packages
+

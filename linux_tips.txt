@@ -1,0 +1,74 @@
+Use the LTS kernel - you can change it with: akm in archlinux
+Uninstall your update notifier
+Install only a single DE/WM : desktop environment / windows manager
+Let your updates finish before rebooting
+Make sure your root partition doesn’t become completely full
+Use a simple partition layout
+Use a simple system configuration -no btrfs or grub or snapshooting boot
+Don’t re-use /home
+Have some amount of swap
+Don’t reset or hard power off your system -
+Don’t install packages you don’t use -
+Don’t use 3rd party repositories -
+Don’t use *-git packages without a reason
+Use a minimal maintenance routine
+Read the questions package manager asks you
+Don’t multi-boot
+Don’t follow advice you don’t understand -
+Use common, mainstream hardware
+
+name folders without spaces
+
+----installing
+GPT partition table and not MBR.
+prefer not to use dual boot. just install one Linux OS
+
+--partitions طريقة Efi
+- efi: fat32. flags: boot - 1 GB
+- swap - 4 GB
+- / : ext4.  no flags. - at least 32 GB
+-/home . ext4. no flags.
+
+--partitions طريقة BIOS - MBR or GPT are supported
+- swap - 4 GB
+- / : ext4.  no flags. - at least 32 GB
+-/home . ext4. no flags.
+- grub-bootloader: unformatted. flags: grub-bootloader - at the end of the space. at least 16.5 kb
+
+في حال عدم إقلاع الحاسب من النظام عبر efi نضيف ملف الإقلاع يدويا من خيارات efi في bios
+----fingerprint
+libfprint
+fprintd
+to configure: fprintd-enroll
+
+-----usefull commands
+sleep 10
+shutdown 30     / shutdown after 30 minutes
+sudo systemctl start NetworkManager   / start networkmanager service
+sudo rm /path/to/file /remove file
+remove folder: rm -r folder
+
+---best file system to share with windows / for flash usb device
+exFAT
+
+---to execute a file
+terminal: ./file.run
+
+---download from terminal
+wget link   / alt: curl
+to resume download: wget -c link
+wget -c  https://www.videohelp.com/download-wJmmdxxN/iTunes64Setup12.8.exe
+
+--check if using systemd
+ps -p 1 -o comm=
+output: runit / or: systemd
+
+---change the owner of the folder
+chown -R new_owner:group directory_name
+
+---change the owner of a file:
+chown void file
+
+---change password
+passwd
+

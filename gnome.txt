@@ -1,0 +1,37 @@
+add keyboard shortcut to poweroff the system: super_key + del
+---show extentions
+file explorer: view in list
+add column: type
+---add a new empty file
+/home/void/Templates
+add a new empty file with name: empty
+---dark theme for root privilages apps
+sudo gnome-control-center
+--- cursor icon problem: i have installed the package of breez_icon then i change the cursor from twaek app then reset the original cursor and it is fixed
+---turn off screen
+add this script to /usr/local/bin/dpms
+
+#!/bin/sh
+# Get the on/off display status
+stat=$(busctl --user get-property org.gnome.Mutter.DisplayConfig /org/gnome/Mutter/DisplayConfig org.gnome.Mutter.DisplayConfig PowerSaveMode | cut -d ' ' -f 2)
+
+if [ "$stat" -eq 0 ]; then
+    # Turning screen off...
+    busctl --user set-property org.gnome.Mutter.DisplayConfig /org/gnome/Mutter/DisplayConfig org.gnome.Mutter.DisplayConfig PowerSaveMode i 1
+else
+    # Turning screen on...
+    busctl --user set-property org.gnome.Mutter.DisplayConfig /org/gnome/Mutter/DisplayConfig org.gnome.Mutter.DisplayConfig PowerSaveMode i 0
+fi
+
+then:
+cd /usr/local/bin
+sudo chmod +x dpms
+then: add the keyboard shortcut to execute that file
+
+----video player
+showtime insteda of totem
+---pdf viewer
+papers instead of document viewer
+
+---add a new icon to app list
+add .desktop file to: /usr/share/applications
