@@ -52,8 +52,16 @@ xbps-query -l | awk '{ print $2 }' | xargs -n1 xbps-uhelper getpkgname
 save to list:
 package-list.txt
 
+--remove old packages from cache
+To ensure that only the latest downloaded packages are stored and old versions are not retained, you can use the 
+xbps-remove -O
+command, which removes old, no-longer installed, or outdated package files from the cache
+
 --copy this folder:
 /var/cache/xbps
+
+---copy database
+/var/db/xbps/https___repo-default_voidlinux_org_current_musl
 
 ---install the packages in the other computer
 xbps-install -Sf $(cat package-list.txt)
@@ -61,11 +69,22 @@ After installation, run xbps-reconfigure -a
 rsync
 
 ---build a modified iso
-kotoko/voidlinux-iso-extra, 
-void-mklive
-sudo ./mkiso.sh -a x86_64-musl -b gnome  -r /var/db/xbps
+kotoko/voidlinux-iso-extra ?
+void-mklive-master
+b = One of base, enlightenment, xfce, mate, cinnamon, gnome, kde, lxde, lxqt, or xfce-wayland
 sudo ./mkiso.sh -a x86_64-musl -b gnome  -r /var/cache/xbps
--p "firefox ibreoffice wine winegui cups cups-pdf fastfetch encfs git tor telegram-desktop"
+/var/db/xbps isn't a repository. /var/cache/xbps is the local cache, but it would need to be turned into a repository with xbps-rindex
+ -r <repo>          Use this XBPS repository. May be specified multiple times
+ -c <cachedir>      Use this XBPS cache directory (default: ./xbps-cachedir-<arch>)
+ 
+sudo ./mkiso.sh -a x86_64-musl -b gnome -r /var/db/xbps/https___repo-default_voidlinux_org_current_musl -- -c /var/cache/xbps -p "firefox libreoffice libreoffice-i18n-ar wine cups cups-pdf fastfetch encfs git tor telegram-desktop android-tools yt-dlp gimp newsboat vpm f3 ffmpeg foomatic-db foomatic-db-engine cups-filters"
+--c /var/cache/xbps
+ 
+ xbps-rindex?
+ Other options can be passed directly to mklive.sh by specifying them after the --.
+ 
+copy files to:
+/void-mklive-master/xbps-cachedir-x86_64-musl
 
 ---killall alternative: pkill
 sudo pkill tor
@@ -76,3 +95,20 @@ multilib: contains 32-bit libraries for 64-bit systems (glibc only)
 multilib/nonfree: contains non-free multilib packages
 debug: contains debugging symbols for packages
 
+---set up virt manager
+sudo ln -s /etc/sv/libvirtd /var/service
+sudo ln -s /etc/sv/virtlockd /var/service
+sudo ln -s /etc/sv/virtlogd /var/service
+
+ln -s /etc/sv/dbus /var/service
+ln -s /etc/sv/polkitd /var/service
+
+sudo usermod -aG libvirt void
+
+You may also need to add your user to /etc/libvirt/qemu.conf to resolve permission issues when accessing 
+ File > Add Connection. Select QEMU/KVM as the hypervisor. You can choose either the User session (qemu:///session) or System (qemu:///system) connection. The System connection is generally recommended as it provides access to all available resources and better networking capabilities. The User session connection has limited networking features and requires the system variant to be set up first for bridged networking.
+
+shared folder:
+package to install: virtiofsd
+open - details - memort: enable shared memory
+add hardware - file system: vitiofs - target: host_folder
