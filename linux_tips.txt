@@ -57,7 +57,7 @@ terminal: ./file.run
 ---download from terminal
 wget link   / alt: curl
 to resume download: wget -c link
-wget -c  https://www.videohelp.com/download-wJmmdxxN/iTunes64Setup12.8.exe
+wget -c https://download.eu-central-1.fromsmash.co/transfer/klyJiofXVZ-dt/file/8329dfa4c89ebdcc3ca3c51b6aebc42ccde76ce0?identity=03db749f29a839aed5901975dbd3f43f-2470285d2dbf40badd12b388fcba0674306deeb3f9c6ad2af97d242d90d53a471ae203e191f3efa12293b86075d0488b6e7ae6246189fdd8522ddf86138d4121d8cae65d8a9ba2b51893a64997f83e0f&Expires=1766803373&Key-Pair-Id=APKAIM76HR2FWFZRN3HA&Signature=a61TpZFgSAhWzscw-UYVbSdU9tG0e0Cvrd7ggijFUiPPOfdFh82fi7XN9bzaRKwM5I1pVu7c2TIOsKybXLXOLF2K0i0KJ-MAzNHrn0fto3nbYJA9-gUHAq-D~nTjal9MMRtZ5~Bpa5CmAm5WLicd-840WdLGBn59k9kJW9jUDgsxJLQpF6bpJIgcywvP1p43Dpy97iOcv05I00vCkWzb1efAu7PKH040YEXvzzCEU3N8DcgMHf2Sh6vZfbFFq0cFh6TpBZB7KdG2AK7f-ppMlvnT5tz~OXZDXQyrG1E5Odtw22hIiCJimaXFKRwI1hRRIfd7MDJjo7eU5mkW~ZAsEA__
 
 --check if using systemd
 ps -p 1 -o comm=
@@ -72,3 +72,29 @@ chown void file
 ---change password
 passwd
 
+---empty trash command
+rm -rf ~/.local/share/Trash/*
+
+---make bootable iso
+ sudo dd bs=4M if=path_to_iso of=/dev/sdb(whatever your usb drive is) oflag=sync status=progress 
+ 
+ ---available space in home partition
+df -h /home
+
+----command shortcut
+edit: .bashrc
+add:
+# Launch Nheko Matrix client through Tor (bypasses network restrictions)
+alias nheko-tor='torsocks nheko'
+
+---desktop shortcut
+If you ever want a desktop shortcut (for launching from menu or desktop):
+Create a file ~/.local/share/applications/nheko-tor.desktop with this content:desktop
+[Desktop Entry]
+Name=Nheko (via Tor)
+Comment=Matrix client through Tor
+Exec=torsocks flatpak run im.nheko.Nheko
+Icon=im.nheko.Nheko
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;Chat;
