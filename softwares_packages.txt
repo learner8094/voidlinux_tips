@@ -1,5 +1,6 @@
 ----Softwares
-ibreoffice
+fwupd
+libreoffice
 libreoffice-i18n-ar
 firefox
 wine
@@ -9,29 +10,45 @@ cups-pdf
 cups-filters
 fastfetch / show info in CLI - old: neofetch
 encfs / encrypt folders
-git
 tor
 telegram
 android-tools     / adb and fastboot
 yt-dlp   / download from youtube. front end: Parabolic
 ffmpeg
-gcompat / to run glibc apps in musl system
 gimp / photoshop alternative
-cutecom / with qt5 - alternative with gtk gnome: moserial
-zenmap / in voidlinux: in the non free repo
+virt-manager / virtual machine. gnome alternative: boxes.
+virtiofsd / for shared folders
 f3 / to test flash disk real capacity
+git
+audacity / sound editor. alternative in kde: kwave audio editor
+moserial: gtk / cutecom: qt5
+newsraft / newsboat / read atom feeds
+ImageMagick
+make
+translate-shell
+python3-pip
+urlwatch
+srain / irc client
 
-virt-manager
+foomatic-db / printers drivers - foomatic-db-engine / old
+nmap / non-free repo
+diskonaut
+zenmap / in voidlinux: in the non free repo
+obs-studio    / record screen / voidlinux: obs
+tftp-hpa / tftp server and client
+filelight / or: disk usage analyser: baobab
+kde partition manager / or: gparted
+
 rpm / to install rpm files
 intel-gpu-tools
-filelight / or: disk usage analyser: baobab
-obs-studio    / record screen
 tutamail client
 gpt4all-chat
+git-lfs / upload large files to github
 
 ---for void linux
 vpm: intall update search remove
 octoxbps
+gcompat / to run glibc apps in musl system ?
 
 --packages needed and not in voidlinux repo:
 flatpak install flathub (package name)
@@ -40,16 +57,15 @@ muezzin-bin / in flatpak
 crow-translate / in flatpak
 tutanota
 tgpt
+evolution / email client: doesnt support hardened kernel. other: geary: doesnt work with gmail
 
 shamela / المكتبة الشاملة
-ventoy-bin / not working with musl libc
+ventoy-bin / not working with musl libc, just glibc
 UNetbootin
 boomaga  / booklet printing
 
 vivaldi / browser. or: firefox - force dark option
 winetricks
-kde partition manager / or: gparted
-evolution / email client: doesnt support hardened kernel. other: geary: doesnt work with gmail
 inkscape / illustrator alt
 scribus / indesign alt
 python-pip
@@ -58,9 +74,8 @@ redshift / if not using gnome or kde: they have it integrated. make it in startu
 freetube / with tor: default settings using 127.0.0.1 for the IP and 9050 for the port.
 python-pdftotext
 Monero - feather-wallet / cryptocurrency / cake wallet
-jre-openjdk - java runstime - is needed for executing GUI Java programs.
+jre-openjdk - java runstime - is needed for executing GUI Java programs. / in void: openjdk11-jre
 jdk-openjdk - is needed for Java development. jdk= java developement kit
-base-devel / to build AUR packages
 webcamoid   / camera software
 vlc: already with endeavouos / alternative: haruna is better
 foo2zjs-nightly / hp printer . alternative: hplip
@@ -69,16 +84,16 @@ checkra1n  / ios jailbreak
 idevicerestore  / to restore ios devices with ipsw file
 simplex-chat
 ktea /for alaram
-kwave/ audio editor
 krecorder / video recoreder
 spectacle / kde screen capture
 tor browser
-yay github-desktop
+github-desktop
 
 --just for archlinux:
 akm / kernel manager. change to hardened.
 archtorify
 yay: shipped be default in endeavouros
+base-devel / to build AUR packages
 
 --vivalid browser
 Proxy Switcher
@@ -87,6 +102,7 @@ Proxy Switcher
 settings: colors: dark background
 quick proxy toggle
 ublock origin addon for firefox
+dark reader extension
 kiwix firefox / download offline archlinux and offline wikipedia zim files
 ClearURLs firefox
 NSFW Content Blocker
@@ -101,6 +117,7 @@ uncheck: allow firefox to send technical data
 Enable HTTPS-Only Mode in all windows
 DNS: max protection
 search: use brave search. open. then right click the link bar: add brave search
+Spoof Geolocation   / fake geolocation
 ---firefox disable copy/past restriction
 about:config
 dom.event.clipboardevents.enabled
@@ -123,10 +140,29 @@ extention:  Template Changer: TemplateChanger-L-2.0.1.oxt
 add arabic spell checking extention: dict-ar-3.5.oxt
 tools: auto correct: add صلى الله عليه وسلم، رضي الله عنها
 
+/etc/xbps.d/ignore.conf
+ignorepkg=libreoffice-i18n-de
+ignorepkg=libreoffice-i18n-es
+ignorepkg=libreoffice-i18n-fr
+ignorepkg=libreoffice-i18n-it
+ignorepkg=libreoffice-i18n-pl
+ignorepkg=libreoffice-i18n-pt
+ sudo xbps-remove libreoffice-i18n-fr 
+ 
 -----ffmpeg split video file
 ffmpeg -i 0.mp4 -t 00:38:36 -c copy smallfile1.mp4 \ set duration
 ffmpeg -i file.mp3 -ss 00:08:03 -t 00:02:48 -c copy 03.mp3  /start from  ss + set duration t
+ffmpeg -i 1.mp4 -vn -acodec libmp3lame -qscale:a 4 1.mp3
 
+ffmpeg -i aipowered.mp4 -ss 00:00:03  -vf scale=640:-1  -vcodec libx264 -crf 28 aipowered1.mp4 
+-r 30  frame rate
+ Constant Rate Factor (CRF)
+ (Adjust -crf 23 to a higher number like 28 for smaller size, or lower like 18 for better quality)
+ 
+  -vf scale=640:-1
+  reduce resolution
+  Replace 1280 with other values like 640 for 480p or 1920 for 1080p
+  
 ADD picture to audio:
 ffmpeg -loop 1 -i b.jpg -i 1 31-35.mp3 -shortest out.mp4
 ffmpeg -i black.png -i 31-35.mp3 ep1.mp4
@@ -134,8 +170,8 @@ ffmpeg -i black.png -i 31-35.mp3 ep1.mp4
 conver all files in folder to mp3:
 for f in *.mp4; do ffmpeg -i "$f" -vn "$(basename "$f" .mp4).mp3"; done
 
-convert file to mp3
-ffmpeg -i ibn-ashir-kawtar.3gp -vn new.mp3
+convert file 
+ffmpeg -i 3.mp4 -vn new.m4a
 
 ----wakeup alarm
 echo "sudopass HERE" | sudo -S rtcwake -m show -l -v |rg alarm: | cut -c 8-30
@@ -249,9 +285,14 @@ this will automatically merge the two files with ffmpeg
 cups-filters
 http://127.0.0.1:631
 http://localhost:631
-sudo ln -s /etc/sv/cups /var/service/
+sudo ln -s /etc/sv/cupsd /var/service/
+sudo ln -s /etc/cups /var/service/
 sudo usermod -a -G lpadmin void
 username and pass: same as system
+sudo rm -r /var/service/cupsd
+sudo rm -r /var/service/cups
+rm /var/service/avahi-daemon
+rm /var/service/cups-browsed
 
 ---brother printer
 brother-brlaser
@@ -266,3 +307,36 @@ The 5th bit from the right is 0, meaning dithering is not present. If it is equa
 (0x00070030): 0x00000050
 00000000000000000000000001010000
 
+----read .atom feeds
+sudo xbps-install newsboat
+mkdir -p ~/.newsboat
+nano ~/.newsboat/urls
+i
+https://github.com/void-linux/void-packages/commits/master.atom
+espace
+:wq
+newsboat
+others: neix - srss
+
+---telegram bot
+python3 -m venv myenv
+source myenv/bin/activate
+pip install python-telegram-bot --upgrade
+
+deactivate
+
+sudo xbps-install -S python3-pipx
+pipx install python-telegram-bot
+
+---url watch
+/home/void/.config/urlwatch
+name: "openwrt"
+url: "https://downloads.openwrt.org/releases/"
+
+---torsocks
+torsocks appname       / open the app with tor
+
+---athan in gnome
+sudo xbps-install -S gnome-browser-connector gnome-shell
+https://extensions.gnome.org/extension/6997/athantimes/
+then: install
