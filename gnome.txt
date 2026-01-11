@@ -28,10 +28,10 @@ cd /usr/local/bin
 sudo chmod +x dpms
 then: add the keyboard shortcut to execute that file
 
-----video player
-showtime insteda of totem
----pdf viewer
-papers instead of document viewer
-
 ---add a new icon to app list
 add .desktop file to: /usr/share/applications
+
+------athan in gnome
+sudo xbps-install -S gnome-browser-connector gnome-shell
+https://extensions.gnome.org/extension/6997/athantimes/
+then: install
