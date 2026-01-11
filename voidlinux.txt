@@ -29,7 +29,15 @@ sudo vpm up = update system
 sudo vpm i pacakge = install package
 vpm s package = search
 vpm remove package 
-vpm ar = autoremove - remove orphaned packages
+vpm ar = autoremove - remove orphaned packages. orphans = unused automatic dependencies.
+
+---clean the system
+sudo xbps-remove -o   / remove orphans: Installed packages that were originally pulled in automatically as dependencies of another package, but are no longer required by any currently installed package.
+sudo vkpurge list   / remove old kernels
+sudo vkpurge rm all
+sudo xbps-remove -O    / Remove obsolete cached packages (old versions no longer in repos or needed):
+sudo xbps-remove -OO   / + remove uninstalled pacakges
+sudo xbps-remove -Oo    / orphans + cache
 
 ---enable nonfree repository
 sudo vpm i void-repo-nonfree
@@ -42,6 +50,7 @@ sudo vpm remove void-repo-nonfree
 sudo xbps-install -S flatpak
 Add the Flathub repository, the primary source for Flatpak applications:
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub org.signal.Signal
 
 Restart your system to complete the setup process. After rebooting, you can install applications.
 Install the desired application using the flatpak install command. For example, to install Discord:
@@ -77,11 +86,15 @@ sudo ./mkiso.sh -a x86_64-musl -b gnome  -r /var/cache/xbps
  -r <repo>          Use this XBPS repository. May be specified multiple times
  -c <cachedir>      Use this XBPS cache directory (default: ./xbps-cachedir-<arch>)
  
-sudo ./mkiso.sh -a x86_64-musl -b gnome -r /var/db/xbps/https___repo-default_voidlinux_org_current_musl -- -c /var/cache/xbps -p "firefox libreoffice libreoffice-i18n-ar wine cups cups-pdf fastfetch encfs git tor telegram-desktop android-tools yt-dlp gimp newsboat vpm f3 ffmpeg foomatic-db foomatic-db-engine cups-filters"
---c /var/cache/xbps
+sudo ./mkiso.sh -a x86_64-musl -b gnome -- -c /var/cache/xbps -p "fwupd firefox libreoffice libreoffice-i18n-ar wine winegui cups cups-pdf cups-filters foomatic-db foomatic-db-engine fastfetch encfs git tor telegram-desktop android-tools ryt-dlp gimp newsboat vpm f3 ffmpeg virt-manager virtiofsd audacity make ImageMagick moserial gparted"
+
+ -r /var/db/xbps/https___repo-default_voidlinux_org_current_musl 
  
  xbps-rindex?
  Other options can be passed directly to mklive.sh by specifying them after the --.
+ 
+ /var/db/xbps/https___repo-default_voidlinux_org_current_musl/x86_64-musl-repodata
+sudo xbps-rindex -a /var/db/xbps/https___repo-default_voidlinux_org_current_musl/x86_64-musl-repodata
  
 copy files to:
 /void-mklive-master/xbps-cachedir-x86_64-musl
@@ -112,3 +125,34 @@ shared folder:
 package to install: virtiofsd
 open - details - memort: enable shared memory
 add hardware - file system: vitiofs - target: host_folder
+
+---- in home folder files: core.1273 core.1281 core.1267
+While these files are useful for developers and system administrators, they can be safely deleted if you no longer need them for debugging, as they are not required for system operation.
+
+---increase volume more tham 100
+pactl set-sink-volume 0 150%
+pactl list sinks
+  
+---vi terminal - vi editor
+    Modes:
+ Command mode: Default mode. Use keys like i (insert), :w (save), :q (quit), :q! (quit without saving), :wq (save and quit).
+  Insert mode: Press i to enter text. Press Esc to return to command mode.
+  Navigation: Use arrow keys or h (left), j (down), k (up), l (right) in command mode.
+  Editing: In insert mode, type to edit. In command mode, use x to delete a character, dd to delete a line, u to undo.
+  Search: In command mode, type /text to search forward, n for next match.
+
+---python pip
+python3 -m venv ~/venv
+~/venv/bin/pip install pylibfdt
+~/venv/bin/extract-dtb /home/void/boot.img -o dtb_output/
+pip3 install pylibfdt
+
+ /home/void/venv/bin/python3 -m pip install --upgrade pip
+sudo xbps-install -S python3-devel
+
+---xbps-install
+xbps-install -S xtools git
+git clone https://github.com/void-linux/void-packages.git
+cd void-packages
+./xbps-src pkg audacity
+xbps-install --repository=hostdir/binpkgs audacityTo get a newer version, edit srcpkgs/audacity/template (change version= to 3.7.7, update checksum/distfiles), then build.
